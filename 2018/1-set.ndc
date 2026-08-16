@@ -1,0 +1,26 @@
+let nums = read_file("input/1").signed_nums();
+let sum = 0;
+let set = %{};
+
+for num in nums {
+  sum += num;
+  set.insert(sum);
+}
+
+print("Part 1", sum);
+
+let idx = 0;
+let len = nums.len();
+
+while true {
+  sum += nums[idx % len];
+
+  if sum in set {
+    break;
+  } else {
+    set.insert(sum);
+  }
+  idx += 1;
+}
+
+print("Part 2", sum);
