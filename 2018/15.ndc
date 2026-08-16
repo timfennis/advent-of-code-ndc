@@ -1,0 +1,236 @@
+let lines = read_file("input/15").lines();
+
+fn enemy(type) {
+  if type == "E" { "G" } else { "E" }
+}
+
+fn solve(lines, elves_dmg) {
+  let w = lines[0].len();
+  let h = lines.len();
+
+  let units = %{};
+  let walls = %{};
+  for y in 0..h, x in 0..w {
+    let c = lines[y][x];
+    if c == "#" { walls.insert((y, x)); }
+    else if c == "E" or c == "G" { units[y,x] = (y, x, c, 200) } 
+  }
+
+  fn print_state() {
+    let objects = %{(y, x) for (y, x), _ in units} | walls;
+    let minx, miny = 0, 0 ;
+    let maxx = [x for (y, x), _ in objects].max();
+    let maxy = [y for (y, x), _ in objects].max();
+
+    for y in miny..=maxy {
+      let buf = "";
+      for x in minx..=maxx {
+        if (y, x) in walls {
+          buf.append("#");
+        } else if (y, x) in units {
+          buf.append(units[y, x][2]);
+        } else {
+          buf.append(".");
+        }
+      }
+      print(buf);
+    }
+  }
+
+  fn find_enemy(pos, type) {
+    let enemy_type = enemy(type);
+    
+    let obstructed = %{(y, x) for _, (y, x, t, _) in units, if t == type} | walls;
+
+    let queue = [(pos, 0)];
+    let seen = path_map(pos, false);
+
+    // Build a mapping (called seen) that tells us how many steps it takes to get to every
+    // location on the board
+    let cur = (); // queue.pop_left()
+    while (cur = queue.pop_left()) != () {
+      let (cy, cx), dist = cur;
+      seen[cy, cx] = dist;
+      let neighbours = [cy + dy, cx + dx for dy, dx in dirs, if (cy + dy, cx + dx) not in obstructed];
+      for ny, nx in neighbours, if (ny,nx) not in seen {
+        seen[ny, nx] = dist + 1;
+        queue.push(((ny, nx), dist + 1));
+      }
+    }
+
+    // Find all the enemy units and al positions around them. If any of the positions are 
+    // positions we can get to we consider those positions
+    let dists = [];
+    for (ey, ex), (_, _, et, ehp) in units, if et == enemy_type {
+      for ey, ex in [ey + dy, ex + dx for dy, dx in dirs], if (ey, ex) in seen {
+        dists.push((seen[ey, ex], ey, ex));
+      }
+    }
+
+    // Sort positions to find the closest option in reading order
+    dists.sort();
+    
+    if dists.len() == 0 {
+      return false;
+    }
+
+    let ed, ey, ex = dists[0];
+    
+    ey, ex
+  }
+
+  fn neighbours(pos, obstructed) {
+    let y, x = pos;
+    [y + dy, x + dx for  dy, dx in  dirs, if (y + dy, x + dx) not in obstructed]
+  }
+
+  fn path_map(start, end) {
+    let seen = %{start: 0};
+    let obstructed = %{(y, x) for _, (y, x, _, _) in units} | walls;
+    if end != false {
+      obstructed.remove(end);
+    }
+
+    let pre = -Inf;
+    while pre < seen.len() {
+      pre = seen.len();
+      let cur_len = seen.len();
+      for (y, x), dist in [x for x in seen] {
+        let neighbours = neighbours((y, x), obstructed);
+        for (ny, nx) in neighbours {
+          if (ny, nx) not in seen {
+            seen[ny, nx] = dist + 1;
+          } 
+        }
+      }
+    }
+    seen
+  }
+
+  fn shortest_path(from, to) {
+    let (fy, fx), (ty, tx) = from, to;
+
+    let obstructed = %{(y, x) for _, (y, x, _, _) in units } | walls;
+    let candidates = neighbours(from, obstructed);
+
+    let pm = path_map(to, from);
+
+    let options = [(pm[y, x], y, x) for y, x in candidates, if (y, x) in pm].sorted();
+
+    if options.len() == 0 {
+      return false;
+    }
+
+    options[0][1], options[0][2]
+  }
+
+  let dirs = [(-1,0),(1,0),(0,-1),(0,1)];
+  let rounds = 1;
+
+  // print("--------------- initial state ---------------");
+  // print_state();
+
+  let elves_start = [1 for _, (_, _, type, _) in units, if type == "E"].sum();
+  while true {
+    let early_end = false;
+    let uc = units.len();
+    // All the units in the order they get to move in 
+    let units_seq = [val for key, val in units].sorted();
+    // For each unit
+    for idx in 0..uc {
+      // HACK check for early end:
+      {
+        let goblins_alive = [1 for _, (y, x, t, h) in units, if t == "G"].sum();
+        let elves_alive = [1 for _, (y, x, t, h) in units, if t == "E"].sum();
+        if goblins_alive == 0 or elves_alive == 0 {
+          early_end = true;
+        }
+      }
+      let cy, cx, _, _ = units_seq[idx];
+      if (cy, cx) in units {
+        let cy, cx, ct, chp = units[cy, cx];
+        let dmg = if ct == "E" { elves_dmg } else { 3 };
+
+        let locs = [(cy + dy), (cx + dx) for dy, dx in dirs, if ((cy + dy), (cx + dx)) not in walls ];
+        let search_type = enemy(ct);
+
+        let enemies_in_range = [ehp, ey, ex, et for ey, ex, et, ehp in [units[y, x] for y, x in locs, if (y, x) in units and units[y, x][2] == search_type]].sorted();
+      
+        if enemies_in_range.len() > 0  {
+          let ehp, ey, ex, et = enemies_in_range[0];
+
+          // SWING WITH THE AXE
+          if ehp - dmg <= 0 {
+            units.remove((ey, ex));
+          } else {
+            units[ey, ex] = (ey, ex, et, ehp - dmg);
+          }
+        } else {
+          // If there are no enemies in range we move
+          let target = find_enemy((cy, cx), ct);
+
+          // If we can't get to any target we just do nothing
+          if target != false {
+            // Find the shoretest path to target
+            let sp = shortest_path((cy, cx), target);
+            if sp != false {
+              // Move to the new loc
+              let ny, nx = sp;
+              units.remove((cy, cx));
+              units[ny, nx] = (ny, nx, ct, chp);
+
+              let locs = [y, x for y, x in [ny + dy, nx + dx for dy, dx in dirs], if (y,x) not in walls];
+              let enemies_near_me =  [units[y, x] for y, x in locs, if (y, x) in units and units[y, x][2] == search_type];
+              let sorted_enemies = [ehp, ey, ex, et for ey, ex, et, ehp in enemies_near_me].sorted();
+
+              if sorted_enemies.len() > 0 {
+                let ehp, ey, ex, et = sorted_enemies[0];
+                if (ehp - dmg) <= 0 {
+                  units.remove((ey, ex));
+                } else {
+                  units[ey, ex] = (ey, ex, et, ehp - dmg);
+                }
+              }
+
+            } else {
+              print_state();
+              assert(false, "NO SHORTEST PATH");
+            }
+          }
+        }
+      } 
+    }
+    
+    if early_end {
+      rounds -= 1;
+    }
+
+    let goblins_alive = [1 for _, (y, x, t, h) in units, if t == "G"].sum();
+    let elves_alive = [1 for _, (y, x, t, h) in units, if t == "E"].sum();
+
+    if elves_alive == 0 or goblins_alive == 0 {
+      let winner = if elves_alive == 0 { "G" } else { "E" };
+      // print("Simulation is done in round: ", rounds);
+      let winner_hp = [h for _, (_, _, t, h) in units, if t == winner].sum();
+      // print("Winner HP:", goblin_hp);
+      // print("Part 1:", goblin_hp * rounds);
+      return winner, winner_hp, rounds, (elves_start == elves_alive);
+    }
+
+    rounds += 1;
+  }
+}
+
+let _, hp, rounds, _ = solve(lines, 3);
+print("Part 1:", hp * rounds);
+
+for dmg in (20..) {
+  print("----------- dmg", dmg, " -----------");
+  let winner, winner_hp, rounds, no_dead_elves = solve(lines, dmg);
+  print("winner:", winner);
+  print("winner_hp:", winner_hp); 
+  print("rounds:", rounds);
+  print("no_dead_elves", no_dead_elves);
+  print("score:", rounds * winner_hp);
+  if no_dead_elves { break; }
+}

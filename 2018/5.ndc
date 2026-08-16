@@ -1,0 +1,32 @@
+fn retract(cur) {
+  let len = cur.byte_len();
+  let i = 0;
+  while i < (len - 1) {
+    let sub = ord(cur[i]) - ord(cur[i + 1]);
+    if sub == 32 or sub == -32 {
+      cur = cur[0..i] ++ cur[i + 2..i + 2 + len];
+      i = max(i - 2, 0);
+      len = cur.byte_len();
+    } else {
+      i += 1;
+    }
+  }
+  return cur;
+}
+
+let line = read_file("input/5").trim();
+
+let ans = line.retract().len();
+print("part 1:", ans);
+
+let best = ans;
+for c in "abcdefghijklmnopqrstuvwxyz" {
+  let l = "";
+  for cc in line, if cc.to_lower() != c {
+    l.append(cc);
+  }
+  
+  best min= l.retract().len();
+}
+
+print("part 2:", best);

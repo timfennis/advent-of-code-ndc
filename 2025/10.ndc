@@ -1,0 +1,136 @@
+let input = read_file("input/2025/10.txt");
+// let input = "[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}
+// [...#.] (0,2,3,4) (2,3) (0,4) (0,1,2) (1,2,3,4) {7,5,12,7,2}
+// [.###.#] (0,1,2,3,4) (0,3,4) (0,1,2,4,5) (1,2) {10,11,11,5,10,5}";
+
+let p1, p2 = 0, 0;
+
+fn flip(s, i) {
+	let s = deepcopy(s);
+	if s[i] == "." {
+		s[i] = "#";
+	} else {
+		s[i] = ".";
+	}
+	return s;
+}
+
+fn avg(l) => l.sum / float(l.len)
+fn score(l) => (l.max - l.min)
+
+fn solve(target, groups) {
+	let q = MinHeap();
+	q.push((0, score(target), deepcopy(target)));
+
+	let seen = %{};
+
+	while true {
+		let steps, _, cur = q.pop();
+		print(cur, steps, q.len());
+		if cur.sum == 0 {
+			return steps;
+		}
+
+		for option in groups {
+			let new = deepcopy(cur);
+			for n in option {
+				new[n] -= 1;
+			}
+
+			if new.all(fn(x) => x > 0 ) and (new not in seen or seen[new] > (steps + 1)) {
+				q.push((steps + 1, score(new), new));
+				seen[new] = steps + 1;
+			}
+		}
+	}
+
+	return Inf;
+}
+
+fn apply(tar, group) {
+	let x = deepcopy(tar);
+	for n in group {
+		x[n] -= 1;
+	}
+
+	return x;
+}
+
+pure fn solve2dp(target, groups) {
+
+	if target.sum == 0 {
+		return 0;
+	}
+
+	let hi_idx = target.locate(target.max);
+
+	for option in groups.filter(fn(g) => g.contains(hi_idx)) {
+		let next = deepcopy(target);
+		for n in option {
+			next[n] -= 1;
+		}
+
+		if next.all(fn(x) => x >= 0) {
+			print(hi_idx, next, next.sum, option);
+			let ans = 1 + solve2dp(next, groups);
+			if ans < Inf {
+				return ans;
+			}
+		} 
+	}
+
+	return Inf;
+}
+
+fn solve2(target, groups) {
+	return solve2dp(target, groups);
+}
+
+pure fn solve3(target, groups) {
+
+	print(target, groups.len);
+	if target.sum == 0 {
+		return 0;
+	}
+
+	let best = Inf;
+	for group in groups {
+		let values_in_group = target.enumerate.filter(fn(x) => x[0] in group).map(fn(x) => x[1]);
+		let limit = values_in_group.min;
+
+		while limit > 0 {
+			let next = deepcopy(target);
+			for n in group {
+				next[n] -= limit;
+			}
+			let ans = limit + solve3(next, groups[1..]);
+			if ans < Inf {
+				return ans;
+			}
+
+			limit -= 1;
+		}
+	}
+
+	return best;
+}
+
+for line in input.lines {
+	let groups = line.split(" ");
+	let target = groups.remove(0)[1..-1];
+	let joltage = groups.pop().nums;
+
+	groups map= nums;
+
+	groups.sort_by(fn(x, y) => x.len <=> y.len);
+
+	let ans = solve3(joltage, groups);
+	print("PATTERN",target, joltage, ans);
+	p2 += ans;
+}
+
+
+
+
+
+print("Part 1:", p1, "\nPart2:", p2);

@@ -1,0 +1,30 @@
+let lines = read_file("input/3").lines();
+
+let map = %{:0};
+
+for line in lines {
+  let _, x, y, w, h = line.nums();
+  
+  for dx in 0..w, dy in 0..h {
+    map[(x + dx, y + dy)] += 1;
+  }
+}
+
+let ans = [1 for _, value in map, if value >= 2].sum();
+
+print("Part 1:", ans);
+
+for line in lines {
+  let id, x, y, w, h = line.nums();
+
+  let is_ok = true;
+  for dx in 0..w, dy in 0..h, if map[(x + dx, y + dy)] > 1 {
+    is_ok = false;
+    break;
+  }
+
+  if is_ok { 
+    print("Part 2:", id);
+    break;
+  }
+}

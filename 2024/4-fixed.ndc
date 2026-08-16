@@ -1,0 +1,37 @@
+let input = read_file("input/2024/4.txt");
+
+let grid = input.lines();
+let height = grid.len();
+let width = grid[0].len();
+
+let nb8 = [(x, y) for x in -1..=1, y in -1..=1, if x != 0 or y != 0];
+
+let ans = 0;
+for r in (0..height), c in (0..width), if grid[r][c] == "X" {
+	for (dr, dc) in nb8 {
+		let word = [grid[r + i*dr][c + i*dc] for i in (0..4),
+											 if (r+i*dr) in (0..height) and (c+i*dc) in (0..width)];
+		if word == ["X", "M", "A", "S"] {
+			ans += 1;
+		}
+	}
+}
+
+print(ans);
+
+let ans = 0;
+for r in (1..height-1), c in (1..width-1), if grid[r][c] == "A" {
+	let co = [r + dr, c + dc for dr, dc in [(-1, -1), (0, 0), (1, 1)] ];
+
+	let l = [grid[rr][cc] for rr, cc in co];
+	if l == ["M", "A", "S"] or l == ["S", "A", "M"] { 
+		let co = [r + dr, c + dc for dr, dc in [(-1, 1), (0, 0), (1, -1)]];
+
+		let l = [grid[rr][cc] for rr, cc in co];
+		if l == ["M", "A", "S"] or l == ["S", "A", "M"] { 
+			ans += 1;
+		}
+	}
+}
+
+ans.print

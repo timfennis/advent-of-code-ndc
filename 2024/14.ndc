@@ -1,0 +1,63 @@
+let input = read_file("input/2024/14.txt").trim;
+
+let width = 101;
+let height = 103;
+
+let robots = [];
+
+for line in input.lines {
+	let px, py, vx, vy = line.signed_nums;
+	robots.push((px, py, vx, vy));
+}
+
+fn next(robs) {
+	let next = [];
+	for rob in robs {
+		let pos = (rob[0], rob[1]);
+		let vel = (rob[2], rob[3]);
+
+		let npos = (pos + vel);
+		let npos = (npos[0] %% width, npos[1] %% height);
+
+		next.push(npos ++ vel);
+	}
+	return next;
+}
+
+let arrangements = %{};
+for i in (1..=8053) {
+	robots = next(robots);
+}
+
+let obj = %{a[0..2] for a in robots};
+for r in (0..height) {
+	let out = "";
+	for c in (0..width) {
+		if (c,r) in obj {
+			out <>= "X";
+		} else {
+			out <>= ".";
+		}
+	}
+	print(out);
+}
+
+let q = [0,0,0,0];
+for rob in robots {
+	let x, y = rob[0], rob[1];
+	if x in (0..50) and y in (0..51) {
+		q[0] += 1;
+	}
+	if x in (51..101) and y in (0..51) {
+		q[1] += 1;
+	}
+	if x in (0..50) and y in (52..103) {
+		q[2] += 1;
+	}
+	if x in (51..101) and y in (52..103) {
+		q[3] += 1;
+	}
+}
+
+print("Part 1", q.product);
+print("Part 2", 8053);
