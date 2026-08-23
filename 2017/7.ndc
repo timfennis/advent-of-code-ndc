@@ -1,0 +1,41 @@
+let input = read_file("input/2017/7.txt");
+
+let seen = %{};
+let graph = %{};
+let weight = %{:0};
+
+for line in input.lines() {
+  let src = line.words[0];
+  weight[src] = line.nums()[0];
+
+  graph.insert(src, []);
+
+  if "->" in line {
+    let dest = line.split_once("->")[1].split(",").map(trim);
+    for d in dest { seen.insert(d) }
+    graph[src] = dest;
+  }
+}
+
+let [root] = graph ~ seen;
+root.print;
+
+fn calc(node) {
+  let nb = graph[node];
+
+  let ws = [calc(node) for node in nb];
+
+  if ws.set.len > 1 {
+    // UH well I didn't code the solution
+    nb.print;
+    nb.map(fn(n) => weight[n]).print;
+    print(ws)
+    print("");
+    // ws.pairwise(fn(a,b) => a.abs_diff(b)).print;
+  }
+
+  return weight[node] + ws.sum;
+}
+
+calc(root).print;
+

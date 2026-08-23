@@ -1,0 +1,82 @@
+
+
+let aa = %{};
+for y, line in read_file("10.in").lines.enumerate {
+  for x, char in line.enumerate {
+    if char == "#" {
+      aa.insert((x, y));
+    }
+  }
+}
+
+
+fn gcd(tup) {
+  let g = gcd(tup[0], tup[1]);
+  tup / g
+}
+
+let bestlen = -Inf;
+let best = ();
+for a, _ in aa {
+  let seen = %{};
+  for b, _ in aa,  if a != b {
+    let diff = a - b;
+    let g = gcd(diff[0], diff[1]);
+    let rc = diff / g;
+
+    let cur = a - rc;
+    while (cur not in aa) {
+      cur -= rc;
+    }
+    seen.insert(cur);
+  }
+
+  if seen.len > bestlen {
+    bestlen = seen.len;
+    best = a;
+  }
+}
+
+print("Part 1: ", bestlen, best);
+
+fn north(vec) {
+  let angle = float(vec[0]).atan2(float(vec[1]));
+  return (3.14159265359 - angle) %% (2.0 * 3.14159265359);
+}
+
+
+let try = %{};
+for dy in -32..32, dx in -32..32, if (dx,dy) != (0,0) {
+  try.insert((dx, dy).gcd);
+}
+
+let try = try.keys.sorted_by(fn(a, b) => north(a) <=> north(b));
+
+let shot = [];
+while shot.len < 200 {
+  // enumerate all vectors
+  // try.map(fn(x) => x <> " -> " <> north(x)).unlines.print;
+
+  for t in try {
+    let cur = best + t;
+
+    while cur not in aa and cur[0] >= 0 and cur[1] >= 0 and cur[0] <= 50 and cur[1] <= 50 {
+      cur += t;
+    }
+
+    if cur in aa { // SHOOT THE ASTEROID
+      shot.push(cur);
+      aa.remove(cur);
+      print("SHOT ASTEROID #", shot.len, "at", cur, "delta", t);
+    }
+
+    if shot.len >= 200 {
+      print("part 2", cur[0] * 100 + cur[1]);
+      break;
+    }
+  }
+}
+
+
+
+

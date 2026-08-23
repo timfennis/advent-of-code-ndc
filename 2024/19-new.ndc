@@ -1,0 +1,19 @@
+let input = read_file("input/2024/19.txt").trim;
+let patterns, designs = input.paragraphs;
+designs = designs.lines;
+patterns = patterns.split(", ");
+
+pure fn is_possible(design) {
+  if design == "" { return true; }
+
+  let possible = false;
+  for pat in patterns {
+    if design.starts_with(pat) {
+       possible |= is_possible(design[(pat.len)..]);
+    }
+  }
+
+  return possible;
+}
+
+designs.count(is_possible).print;

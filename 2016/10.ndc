@@ -1,0 +1,64 @@
+let input = read_file("input/2016/10.txt");
+
+let graph = %{};
+let inv = %{:fn() => []};
+
+for line in input.lines {
+  if line.starts_with("bot") {
+    let ws = line.words;
+    let id, lo, hi = line.nums;
+
+    let lt = ws[5] == "output"; // Type 
+    let ht = ws[10] == "output";
+
+    graph["bot"<>id] = (ws[5] <> lo, ws[10] <> hi);
+  } else if line.starts_with("value") {
+    let v, id = line.nums;
+    inv["bot"<>id].push(v);
+  } else {
+    assert(false, "unexpected");
+  }
+}
+
+let p1 = 0;
+let p2 = 0;
+
+while p1 == 0 or p2 == 0 {
+
+  if inv["output0"].len == 1  and inv["output1"].len==1 and inv["output2"].len==1 {
+    p2 = inv["output0"][0] * inv["output1"][0] * inv["output2"][0];
+  }
+  for id in inv.keys {
+    let chips = clone(inv[id]);
+    if chips.len == 2 {
+      let lo = chips.min;
+      let hi = chips.max;
+
+      if lo == 17 and hi == 61 {
+        p1 = id;
+      }
+
+      let lt, ld = los[id];
+      let ht, hd = his[id];
+      inv[id] = [];
+
+      if lt {
+        out[ld].push(lo);
+      } else {
+        inv[ld].push(lo);
+      }
+
+      if ht {
+        out[hd].push(hi);
+      } else {
+        inv[hd].push(hi);
+      }
+
+    } else if chips.len > 2 {
+      print(chips);
+      assert(false, "unexpected");
+    }
+  }
+}
+
+print(p1, p2);

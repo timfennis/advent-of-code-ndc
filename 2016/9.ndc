@@ -1,0 +1,47 @@
+fn compute(input, rec) {
+  let idx = 0;
+  let il = input.len;
+  let a, b = 1, "test";
+
+  let (a, b, (c, d, [e, f, g])) = (1,2,(3,"test",[5,6,7]));
+
+  let marker = "";
+  let in_marker = false;
+
+  let out = 0;
+
+  while idx < il {
+    if input[idx] == "(" {
+      in_marker = true;
+      marker = "";
+    } else if input[idx] == ")" and in_marker {
+      let a, b = marker.split("x").map(int);
+
+      let sequence = input[(idx + 1)..(idx + 1 + a)];
+
+      if rec {
+        out += b * compute(sequence, rec);
+      } else {
+        out += b * len(sequence);
+      }
+
+      idx += a;
+    } else {
+
+      if in_marker {
+        marker <>= input[idx];
+      } else {
+        out += 1;
+      }
+    }
+
+    idx += 1;
+  }
+
+  return out;
+}
+
+let input = read_file("input/2016/9.txt").trim;
+
+print(compute(input, false));
+print(compute(input, true));

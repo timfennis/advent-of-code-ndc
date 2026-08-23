@@ -1,0 +1,66 @@
+let input = read_file("input/2015/23.txt");
+
+let ip = 0;
+let ins = input.replace(",", "").lines.map(split);
+let a = 1; 
+let b = 0;
+
+while ip < ins.len {
+  print(ip, ins[ip].join(" "), "::", a, b);
+  if ins[ip][0] == "hlf" {
+    if ins[ip][1] == "a" {
+      a \= 2;
+    } else {
+      b \= 2;
+    }
+    ip += 1;
+  } else if ins[ip][0] == "tpl" {
+    if ins[ip][1] == "a" {
+      a *= 3;
+    } else {
+      b *= 3;
+    }
+    ip += 1;
+  } else if ins[ip][0] == "inc" {
+    if ins[ip][1] == "a" {
+      a += 1;
+    } else {
+      b += 1;
+    }
+    ip += 1;
+  } else if ins[ip][0] == "jmp" {
+    ip += int(ins[ip][1]);
+  } else if ins[ip][0] == "jie" {
+    if ins[ip][1] == "a" {
+      if a % 2 == 0 { 
+        ip += int(ins[ip][2]);
+      } else {
+        ip += 1;
+      }
+    } else {
+      if b % 2 == 0 {
+        ip += int(ins[ip][2]);
+      } else {
+        ip += 1;
+      }
+    }
+  } else if ins[ip][0] == "jio" {
+    if ins[ip][1] == "a" {
+      if a == 1 { 
+        ip += int(ins[ip][2]);
+      } else {
+        ip += 1;
+      }
+    } else {
+      if b == 1 {
+        ip += int(ins[ip][2]);
+      } else {
+        ip += 1;
+      }
+    }
+  } else {
+    assert(false);
+  }
+}
+
+print(a, b);

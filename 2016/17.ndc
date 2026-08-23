@@ -1,0 +1,39 @@
+let salt = read_file("input/2016/17.txt").trim;
+let dir4 = %{
+  (-1, 0): "U",
+  (1, 0): "D",
+  (0, -1): "L",
+  (0, 1): "R"
+};
+
+fn neighbours(salt, path) {
+    let opts = md5(salt <> path)[0..4];
+
+    [(-1, 0), (1, 0), (0, -1), (0, 1)].zip([c in "bcdef" for c in opts]).filter(fn(x) => x[1]).map(first)
+}
+
+
+let qq = MinHeap();
+qq.push((0, (0, 0), ""));
+
+let paths = %{};
+while qq.len > 0 {
+  let cost, pos, path = qq.pop();
+
+  if pos == (3, 3) {
+    paths[cost] = path;
+  } else {
+    for nb in salt.neighbours(path) {
+      let next = pos + nb;
+
+      if next[0] in (0..4) and next[1] in (0..4) {
+        qq.push((cost + 1, next, path <> dir4[nb]));
+      }
+    }
+  }
+}
+
+
+print(paths[paths.keys.min]);
+print(paths.keys.max);
+

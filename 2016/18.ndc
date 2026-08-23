@@ -1,0 +1,29 @@
+let input = read_file("input/2016/18.txt").trim;
+// let input = ".^^.^.^^^^".trim();
+let input = list(input);
+
+let sum = input.count(fn(x) => x == ".");
+for i in 1..400_000 {
+
+    if i % 10_000 == 0 {
+      print(i);
+    }
+
+    let next = [];
+    for idx in 0..(input.len) {
+        let l = input.get?(idx - 1).unwrap_or(".") == "^";
+        let c = input.get?(idx).unwrap_or(".") == "^";
+        let r = input.get?(idx + 1).unwrap_or(".") == "^";
+
+        if (l and not c and not r) or (r and not c and not l) or (l and c and not r) or (r and c and not l) {
+          next.push("^");
+        } else {
+          next.push(".");
+          sum += 1;
+        }
+        
+    }
+    input = next;
+}
+
+print(sum);

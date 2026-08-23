@@ -1,0 +1,26 @@
+let elves = list(repeat(1, 3005290));
+// let elves = list(repeat(1, 7));
+let total = elves.len;
+
+fn find_next(idx: Int) {
+  for nn in 1..total {
+    let next = (idx + nn) % total;
+    if elves[next] > 0 {
+      return next;
+    }
+  }
+
+  assert(false);
+}
+
+while elves.count(fn(x) => x > 0) > 1 {
+  print("ROUND", elves.count(fn(x) => x > 0));
+  for idx in 0..total, if elves[idx] > 0 {
+    let next = find_next(idx);
+    elves[idx] += elves[next];
+    elves[next] = 0;
+  }
+}
+
+print(elves.locate(fn(x) => x > 0) + 1);
+

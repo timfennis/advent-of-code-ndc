@@ -1,0 +1,37 @@
+let repl, mol = read_file("input/2015/19.txt").paragraphs.map(trim);
+let revmap = %{ b: a for a, b in repl.lines.map(fn(x) => x.split(" => "))};
+
+print(revmap);
+
+let repl_keys = revmap.keys.sorted_by(fn(a, b) => a.len >=< b.len);
+
+print(repl_keys);
+
+fn replace_once(haystack, needle, subst) {
+  if needle in haystack {
+    for i in 0..haystack.len {
+      if haystack[i..].starts_with(needle) {
+        return haystack[0..i] <> subst <> haystack[i + needle.len..];
+      }
+    }
+  }
+
+  return haystack;
+}
+
+let steps = 0;
+while mol != "e" {
+  // print(mol, mol.len);
+  for repl in repl_keys {
+    if repl in mol {
+      steps += 1;
+      mol = mol.replace_once(repl, revmap[repl]);
+      print(mol, repl, revmap[repl]);
+      break;
+    }
+  } 
+}
+
+print(steps);
+
+"TestFooTestBarTestFoo".replace_once("Foo", "_______").print;

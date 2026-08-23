@@ -1,0 +1,20 @@
+let input = read_file("input/2016/15.txt").lines.map(nums);
+input.push([7, 11, 0, 0]);
+
+fn calc(i, l) { 
+	let id, size, _, pos = l;
+	(i + pos + id) % size == 0
+}
+
+for i in (0..) {
+	let i = 4849845 + 50_000 - i;
+	let y = input.count(fn(l) => calc(i, l));
+	if y > 5 {
+		print(i, y, input.filter(fn(l) => calc(i, l)).map(first));
+	}
+
+	if y == 7 {
+		assert(false);
+	}
+
+}

@@ -1,0 +1,47 @@
+let input = read_file("input/2016/13.txt");
+
+pure fn obs(x, y, m) {
+	let z = x*x + 3*x + 2*x*y + y + y*y;
+	z += m;
+	let out = 0;
+	while z > 0 {
+		out += (z & 1);
+		z >>= 1;
+	}
+	return out % 2 == 0;
+}
+
+for y in 0..7 {
+	let out = "";
+	for x in 0..10 {
+		out <>= if obs(x, y, 10) { "." } else { "#" };
+	}
+
+	print(out);
+}
+
+fn solve(end) {
+
+	let que = Deque();
+	que.push_back((0, (1, 1)));
+
+	let seen = %{(1,1): 0};
+
+	while que.len > 0 {
+		let (steps, cur) = que.pop_front();
+
+		if end in seen {
+			return seen[end], seen.filter(fn(e) => e[1] <= 50).len;
+		}
+
+		for d in [(-1, 0), (1, 0), (0, -1), (0, 1)] {
+			let n = cur + d;
+			if n[0] >= 0 and n[1] >= 0 and obs(n[0], n[1], 1352) and n not in seen {
+				seen.insert(n, steps + 1);
+				que.push_back((steps + 1, n));
+			}
+		}
+	}
+}
+
+print(solve((31,39)));

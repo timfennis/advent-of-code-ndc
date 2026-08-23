@@ -1,0 +1,64 @@
+let seq = read_file("input/2017/10.txt").trim;
+
+
+let hex_table = "0123456789abcdef";
+fn dechex(num) {
+  let out = "";
+  while num > 0 {
+    out <>= hex_table[num % 16];
+    num \= 16;
+  }
+  return out.reversed;
+}
+
+fn solve(input) {
+  let seq = input.map(ord) ++ [17, 31, 73, 47, 23];
+
+  let list_len = 256;
+  let list = [x for x in 0..list_len];
+  let idx = 0;
+  let skip_size = 0;
+
+  fn swap(a, b) {
+    // print("swapping", a, b);
+    let aa = list[a];
+    let bb = list[b];
+    list[a] = bb;
+    list[b] = aa;
+  }
+
+  fn rev(si, so) {
+    // print("rev", si, so);
+    let start = si;
+    let end = si + (so - 1) % list_len;
+
+    for x in 0..(so \ 2) {
+      swap((start + x) %% list_len, (end - x) %% list_len);
+    }
+  }
+
+
+  for _ in 0..64 {
+    for elem in seq {
+      rev(idx, elem);
+      idx += elem;
+      idx += skip_size;
+      skip_size += 1;
+      // print(list);
+    }
+  }
+
+  let out = [];
+  for h in 0..16 {
+    let s = 0;
+    for i in 0..16 {
+      s ~= list[h * 16 + i]
+    }
+    out.push(s);
+  }
+
+  return out.map(dechex).join("");
+}
+
+print(solve("AoC 2017"));
+print(solve(seq));

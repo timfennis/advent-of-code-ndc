@@ -1,0 +1,53 @@
+let pattern = read_file("input/2016/16.txt").trim;
+let pattern = "111";
+
+fn invert(d) { if d == "1" { "0" } else { "1" } }
+fn inverted(d) { [x.invert for x in d ].join("") }
+
+fn checksum(input) {
+	while true {
+		let i = 0; 
+		let out = "";
+		while i < input.len - 1 {
+			let a, b = input[i], input[i + 1];
+			out <>= if a == b { "1" } else { "0" }
+			i += 2;
+		}
+
+		if out.len % 2 == 1 {
+			return out;
+		} else {
+			input = out;
+		}
+	}
+}
+
+pure fn char_at(pattern, index, inverted) {
+	
+	assert(index >= 0);
+	let full_len = pattern.len + 1;
+
+	if index >= full_len { 
+		return char_at(pattern, index - full_len, not inverted);
+	}
+	else if index == full_len - 1 {
+		return if inverted { "1" } else { "0" };
+	} else {
+		if inverted {
+			return pattern.reversed.inverted[index];
+		} else {
+			print(pattern.len, index);
+			return pattern[index];
+		}
+	}
+}
+
+let out = "";
+for x in 0..20 {
+	out <>= char_at(pattern, x, false);
+}
+
+print(out);
+print("out len:", out.len, "checksum:", out.checksum, "want: 01110011101111011");
+
+assert_eq(out.checksum, "01110011101111011");

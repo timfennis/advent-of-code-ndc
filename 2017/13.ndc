@@ -1,0 +1,28 @@
+let layers = %{:(), a: b for [a, b] in read_file("input/2017/13.txt").lines.map(nums) };
+
+pure fn loc(l, t) {
+  return (t % (layers[l] * 2 - 2));
+}
+
+let til = layers.keys.max;
+
+let p1 = 0;
+
+for t in 0..=til {
+  if loc(t, t) == 0 {
+    p1 += t * layers[t];
+  }
+}
+
+print("Part 1:", p1);
+
+let v = layers.keys.sorted;
+
+for i in (0..) {
+  if (0..=til).all(fn(t) => loc(t, t + i) != 0) {
+    print("Part 2:", i);
+    break;
+  } 
+}
+
+

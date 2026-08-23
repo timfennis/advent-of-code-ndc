@@ -1,0 +1,106 @@
+let input = read_file("input/2016/11.txt");
+// let input = r"The first floor contains a hydrogen-compatible microchip and a lithium-compatible microchip.
+// The second floor contains a hydrogen generator.
+// The third floor contains a lithium generator.
+// The fourth floor contains nothing relevant.";
+
+let data = [];
+for floor, line in input.lines.enumerate {
+	for _, element, kind in line.captures("a ([a-z-_]+) ([a-z]+)") {
+		element = element.replace("-compatible", "");
+		data.push([element, kind, floor]);
+	}
+}
+
+fn items_match(a, b) {
+	a[0] == b[0] and a[1] != b[1] and a[2] == b[2]
+}
+
+fn items_mismatch(a, b) {
+	a[0] != b[0] and a[1] != b[1] and a[2] == b[2]
+}
+
+pure fn is_valid(data) {
+	for floor in 0..4 {
+		let data = data.filter(fn(x) => x[2] == floor);
+		let singles = data.filter(fn(item) => {
+			none(data, fn(item2) => items_match(item, item2))
+		});
+
+		if any(singles.combinations(2), fn(x) => items_mismatch(x[0], x[1])) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+fn adj(from) {
+	[from - 1, from + 1].filter(fn(x) => x in (0..4))
+}
+
+fn is_done(data) => data.all(fn(d) => d[2] == 3);
+
+fn contains_stuff(data, floor) {
+  for _, __, f in data {
+    if f <= floor {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+fn solve(data, start_floor) {
+  let seen = %{:fn() => %{}};
+  let queue = Deque();
+  queue.push_back((0, start_floor, deepcopy(data)));
+  seen[0].insert(deepcopy(data));
+  let progress = 0;
+  let best = 0;
+  while true {
+    let steps, cur, data = queue.pop_front();
+
+    if steps > progress {
+      print(steps, seen.values.map(len).sum, queue.len);
+      progress = steps;
+    }
+
+    if is_done(data) {
+      return steps, data;
+    }
+
+    let moveable = data.filter(fn(x) => x[2] == cur);
+
+    let check = moveable.subsequences(2).filter(is_valid) ++ moveable.subsequences(1);
+
+    for items_to_move in check {
+      for next_floor in adj(cur) {
+        let next = deepcopy(data);
+        
+        for item_to_move in items_to_move {
+          let idx = next.locate(item_to_move);
+          next[idx][2] = next_floor;
+        }
+      
+        // print(next in seen[next_floor], seen.len, seen[next_floor].len);
+        if next not in seen[next_floor] and next.is_valid {
+          seen[next_floor].insert(next);
+          queue.push_back((steps + 1, next_floor, next));
+        }
+      }
+    }
+  }
+}
+
+let p1, end_data = solve(data, 0);
+
+print("Part 1:", p1);
+
+end_data.push(["elerium", "generator", 0]);
+end_data.push(["elerium", "microchip", 0]);
+
+// Solve starting from the final state
+let p2, _ = solve(end_data, 3);
+
+print("Part 2:", p1 + 2 * p2);

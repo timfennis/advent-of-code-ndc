@@ -1,0 +1,32 @@
+let target = 368078;
+
+
+let cur_pos = (0, 0);
+let cur_dir = 0;
+let dirs = [(0, 1), (-1, 0), (0, -1), (1, 0)];
+let cur_steps = 1;
+
+
+let grid = %{:0, (0, 0): 1};
+let nb8 = [(y, x) for y in -1..=1, x in -1..=1, if x != 0 or y != 0];
+
+while grid[cur_pos] < target {
+  
+  let dy, dx = dirs[cur_dir % 4];
+
+  for step in (0..cur_steps) {
+    cur_pos = (cur_pos[0] + dy, cur_pos[1] + dx);
+    grid[cur_pos] = [grid[cur_pos[0] + yy, cur_pos[1] + xx] for yy, xx in nb8].sum;
+    print(cur_pos, grid[cur_pos]);
+  }
+
+  cur_dir += 1;
+
+  if cur_dir % 2 == 0 {
+    cur_steps += 1;
+  }
+}
+
+print(grid[cur_pos]);
+
+// R U L L D D R R R U U U L L L L D D D D

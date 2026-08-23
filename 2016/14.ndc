@@ -1,0 +1,63 @@
+let salt = read_file("input/2016/14.txt").trim;
+// let salt = "abc";
+pure fn md5_c(num, r) {
+	let hash = md5(salt <> num);
+	for _ in 0..r {
+		hash = md5(hash);
+	}
+	hash
+}
+
+fn find_r(hash, size) {
+	let w = hash.windows(size);
+	w.filter(fn(ww) => ww.all(fn(c) => ww[0] == c))
+}
+
+
+fn is_key(index) {
+
+
+	if hash.contains_r(3) {
+		for j in 0..1000 {
+			let hash2 = md5_c(index + j);
+			if hash2.contains_rr(5) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+
+fn solve(rounds) {
+	let keys = %{};
+	
+	for i in (0..) {
+		let hash = md5_c(i, rounds);
+		let repeats = hash.find_r(3);
+
+		if repeats.len > 0 {
+			let c = repeats[0][0];
+			let f = c <> c <> c <> c <> c;
+
+			for j in 0..1000 {
+				let h2 = md5_c(i + 1 + j, rounds);
+				if f in h2 {
+					keys.insert(hash)
+					// print(keys.len, i, hash);
+					break;
+				}
+			}
+		}
+
+
+		if keys.len == 64 {
+			return i;
+		}
+	}
+}
+
+print(solve(0));
+print(solve(2016));
+

@@ -1,0 +1,23 @@
+let arr = read_file("input/2017/5.txt").signed_nums;
+
+fn solve(arr) {
+  let pos, newpos, i = 0, 0, 0;
+  while true {
+    newpos = pos + arr[pos];
+    if arr[pos] >= 3{
+      arr[pos] -= 1;
+    } else {
+      arr[pos] += 1;
+    }
+
+    pos = newpos
+    i += 1
+    if newpos not in (0..(arr.len)) {
+      break;
+    }
+
+  }
+  return i
+}
+
+solve(arr).print;

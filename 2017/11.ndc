@@ -1,0 +1,53 @@
+// q (NW -> SE)
+// s (NE -> SW)
+// r (W -> E)
+
+let dir6 = %{
+  "nw": (-1, 1, 0),
+  "n": (0, 1, -1),
+  "ne": (1, 0, -1),
+  "se": (1, -1, 0),
+  "s": (0, -1, 1),
+  "sw": (-1, 0, 1),
+};
+
+let ins = read_file("input/2017/11.txt");
+/// let ins = "se,sw,se,sw,sw".split(",").map(trim);
+
+fn dist(point) {
+  let x = [
+    point[0].abs,
+    point[1].abs,
+    point[2].abs
+  ].sorted;
+
+  x[0] + x[1]
+}
+
+fn solve(instructions) {
+  let instructions = instructions.split(",").map(trim);
+  let cur = (0, 0, 0);
+  let best = 0;
+
+  for x in instructions {
+    cur += dir6[x];
+    best max= dist(cur);
+  }
+
+  let d = dist(cur);
+
+  print("cur:", cur);
+  print("dist:", d, best);
+
+  d, best
+}
+
+// assert_eq(solve("ne,ne,ne"), 3);
+// assert_eq(solve("ne,ne,sw,sw"), 0);
+// assert_eq(solve("ne,ne,s,s"), 2);
+// assert_eq(solve("se,sw,se,sw,sw"), 3);
+
+solve(ins);
+
+
+

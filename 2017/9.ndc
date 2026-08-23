@@ -1,0 +1,74 @@
+let input = read_file("input/2017/9.txt");
+
+fn count_groups(input) {
+  let score = 0;
+  let groups = 0;
+  let in_garbage = false;
+  let idx = 0;
+  while idx < input.len {
+    let char = input[idx];
+    if char == "<" {
+      in_garbage = true;
+    } else if char == ">" {
+      in_garbage = false;
+    } else if char == "{" and not in_garbage {
+      groups += 1;
+      score += groups;
+    } else if char == "}" and not in_garbage {
+      groups -= 1;
+    } else if char == "!" {
+      idx += 1
+    }
+    idx += 1;
+  }
+
+  return score;
+}
+
+fn count_garbage(input) {
+  let score = 0;
+  let groups = 0;
+  let in_garbage = false;
+  let idx = 0;
+  while idx < input.len {
+    let char = input[idx];
+    if char == "<" and not in_garbage {
+      in_garbage = true;
+    } else if char == ">" and in_garbage {
+      in_garbage = false;
+    } else if char == "!" {
+      idx += 1
+    } else {
+      if in_garbage { 
+        score += 1;
+      }
+    }
+    idx += 1;
+  }
+
+  return score;
+}
+
+let test_inputs = [
+  "{}",
+  "{{{}}}",
+  "{{},{}}",
+  "{{{},{},{{}}}}",
+  "{{<!>},{<!>},{<!>},{<a>}}",
+  "{{<!!>},{<!!>},{<!!>},{<!!>}}",
+  "{{<a!>},{<a!>},{<a!>},{<ab>}}"
+];
+
+test_inputs.map(fn(x) => (x, x.count_groups)).unlines.print;
+print("Part 1: ", input.count_groups);
+
+let test_inputs = [
+  "<>",
+  "<random characters>",
+  "<<<<>",
+  "<{!>}>"
+];
+
+test_inputs.map(fn(x) => (x, x.count_garbage)).unlines.print;
+
+print("Part 2: ", input.count_garbage);

@@ -1,0 +1,19 @@
+let input = read_file("input/2025/12.txt").paragraphs;
+let shapes = [ shape.count(fn(x) => x == "#") for shape in input[0..-1] ];
+let tests = input[-1];
+
+let ans = 0;
+for test in tests.lines {
+  let size = test.nums[0..2].product;
+  let foo = test.nums[2..].enumerate.map(fn(t) => t[1] * shapes[t[0]]).sum;
+  if foo < size {
+    ans += 1;
+  }
+}
+
+fn test () {
+  size = 3
+}
+
+print(ans);
+

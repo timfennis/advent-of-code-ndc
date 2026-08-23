@@ -1,0 +1,26 @@
+let rr, cc = read_file("input/2015/25.txt").nums;
+
+let cur = 20151125;
+let row = 1;
+let col = 1;
+
+let grid = %{};
+
+// grid[(1, 1)] = cur;
+
+for row in (1..) {
+  for col in (1..row) {
+    let row = row - col;
+
+    grid[(row, col)] = cur;
+
+    cur = cur * 252533 % 33554393;
+  }
+
+  if (rr, cc) in grid {
+    break;
+  }
+}
+
+print(grid[rr,cc]);
+
