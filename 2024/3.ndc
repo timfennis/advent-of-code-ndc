@@ -5,11 +5,8 @@ let p2 = 0;
 
 let mul = true;
 for ins in input.captures(r"(mul\((\d+),(\d+)\))|(do\(\))|(don\'t\(\))") {
-	print(ins);
 	if ins[0].starts_with("mul") {
-		let _, _, b, c = ins;
-		b = int(b);
-		c = int(c);
+        let b, c = ins[2..].map(int) as List<Int>;
 		if mul {
 			p2 += b * c;
 		}
