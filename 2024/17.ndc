@@ -32,7 +32,7 @@ fn run(prog, ra, rb, rc) {
 		} else if num == 6 {
 			return rc 
 		} else if num == 7 {
-			assert(false);
+            panic("unreachable");
 		} else {
 			return num;
 		}
@@ -69,7 +69,7 @@ fn run(prog, ra, rb, rc) {
 		} else if ins == 7 {
 			rc = ra \ (2^combo(op));
 		} else {
-			assert(false, "invalid instruction");
+            panic("unreachable");
 		}
 	}
 

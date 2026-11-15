@@ -35,8 +35,8 @@ let p2 = 0;
 for line in input.lines {
 	let target, nums = line.split_once(":");
 
-	target = target.int;
-	nums = nums.nums;
+	let target = target.int;
+	let nums = nums.nums;
 
 	if solve(nums[0], nums[1..], target, [mul, add]) {
 		p1 += target;

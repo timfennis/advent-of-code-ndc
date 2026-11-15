@@ -1,45 +1,48 @@
 let target = read_file("input/2015/20.txt").nums.first;
 
-
 pure fn calc(house, mul, lim) {
-  let lim = if lim == false {
-    house.sqrt.ceil.int
-  } else {
-    lim
-  };
+    let lim = if lim == false {
+        house.sqrt.ceil.int
+    } else {
+        lim
+    };
 
-  let o = 0;
-  for e in 1..=lim {
-    if house % e == 0 {
-      o += (house / e) * mul;
+    let o = 0;
+    for e in 1..=lim {
+        if house % e == 0 {
+            o += (house / e) * mul;
+        }
     }
-  }
 
-  return o;
+    return o;
 }
 
 fn bounds(start, target, mul, lim) {
-  let x = start;
-  while true {
-    let r = calc(x, mul, lim);
-    if r >= target {
-      return (x \ 3, x);
-    } else {
-      x *= 2;
+    let x = start;
+    while true {
+        let r = calc(x, mul, lim);
+        if r >= target {
+            return (x \ 3, x);
+        } else {
+            x *= 2;
+        }
     }
-  }
 }
 
 fn solve(mul, lim) {
-  let lo, hi = bounds(1, target, mul, lim);
+    let lo, hi = bounds(1, target, mul, lim);
 
-  for x in lo..=hi {
-    if calc(x, mul, lim) > target {
-      return x;
+    for x in lo..=hi {
+        if calc(x, mul, lim) > target {
+            return x;
+        }
     }
-  }
+
+    panic("unreachable");
 }
 
-
-solve(10, false).print;
-solve(11, 50).print;
+let p1, p2 = solve(10, false), solve(11, 50);
+assert_eq(p1, 776160);
+assert_eq(p2, 786240);
+p1.print;
+p2.print;

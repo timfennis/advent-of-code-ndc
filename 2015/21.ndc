@@ -1,68 +1,48 @@
 let input = read_file("input/2015/21.txt");
 
+let ww = [(8, 4, 0), (10, 5, 0), (25, 6, 0), (40, 7, 0), (74, 8, 0)];
 
-let ww = [
-  (8, 4, 0),
-  (10, 5, 0),
-  (25, 6, 0),
-  (40, 7, 0),
-  (74, 8, 0)
-];
+let aa = [(0, 0, 0), (13, 0, 1), (31, 0, 2), (53, 0, 3), (75, 0, 4), (102, 0, 5)];
 
-let aa = [
-  (0, 0, 0),
-  (13, 0, 1),
-  (31, 0, 2),
-  (53, 0, 3),
-  (75, 0, 4),
-  (102, 0, 5)
-];
-
-let rr = [
-  (0, 0, 0),
-  (25, 1, 0),
-  (50, 2, 0),
-  (100, 3, 0),
-  (20, 0, 1),
-  (40, 0, 2),
-  (80, 0, 3)
-];
+let rr = [(0, 0, 0), (25, 1, 0), (50, 2, 0), (100, 3, 0), (20, 0, 1), (40, 0, 2), (80, 0, 3)];
 
 fn sim(p_hp, p_attack, p_armor, b_hp, b_attack, b_armor) {
-  while true {
-    b_hp -= max(p_attack - b_armor, 1);
-    if b_hp <= 0 { return true; }
-    p_hp -= max(b_attack - p_armor, 1);
-    if p_hp <= 0 { return false; }
-  }
-} 
-
-let p1, p2 = Inf, -Inf;
-for w in ww { 
-  for a in aa {
-    for r1 in rr {
-      for r2 in rr {
-        if r1[0] != r2[0] or r1[0] == 0 {
-          let res = sim(
-            100, 
-            // You
-            w[1] + r1[1] + r2[1],
-            a[2] + r1[2] + r2[2],
-            // Boss
-            103, 9, 2
-          );
-          if res {
-            p1 min= w[0] + a[0] + r1[0] + r2[0];
-          }
-          if not res {
-            p2 max= w[0] + a[0] + r1[0] + r2[0];
-          }
-        }
-      }
+    while true {
+        b_hp -= max(p_attack - b_armor, 1);
+        if b_hp <= 0 { return true; }
+        p_hp -= max(b_attack - p_armor, 1);
+        if p_hp <= 0 { return false; }
     }
-  }
 }
 
-print(p1, p2);
+let p1, p2 = Inf, -Inf;
+for w in ww {
+    for a in aa {
+        for r1 in rr {
+            for r2 in rr {
+                if r1[0] != r2[0] or r1[0] == 0 {
+                    let res = sim(
+                        100,
+                        // You
+                        w[1] + r1[1] + r2[1],
+                        a[2] + r1[2] + r2[2],
+                        // Boss
+                        103,
+                        9,
+                        2,
+                    );
+                    if res {
+                        p1 min= w[0] + a[0] + r1[0] + r2[0];
+                    }
+                    if not res {
+                        p2 max= w[0] + a[0] + r1[0] + r2[0];
+                    }
+                }
+            }
+        }
+    }
+}
 
-// sim(8, 5, 5, 12, 7, 2).print;
+assert_eq(p1, 121);
+assert_eq(p2, 201);
+print(p1, p2);

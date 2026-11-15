@@ -24,10 +24,10 @@ while true {
     let tx, ty = cx, cy;
     // check to see if enclosed
     
-    let mx1, mx2 = false, false;
+    let mx1, mx2 = None, None;
     while true {
       if (cx - 1, cy) in walls {
-        mx1 = cx;
+        mx1 = Some(cx);
         break;
       }
 
@@ -43,12 +43,12 @@ while true {
     }
 
     // if enclosed on the left
-    if mx1 != false {
+    if mx1.is_some {
       cx, cy = tx, ty; // revert
       
       while true {
         if (cx + 1, cy) in walls {
-          mx2 = cx;
+          mx2 = Some(cx);
           break;
         }
 
@@ -64,7 +64,9 @@ while true {
       }
 
       // if enclosed on the right
-      if mx2 != false {
+      if mx2.is_some {
+        let mx1 = mx1.unwrap();
+        let mx2 = mx2.unwrap();
         print("enclosed on two sides", mx1, mx2, cy);
         for ix in mx1 ..= mx2 {
           water.insert((ix, cy));

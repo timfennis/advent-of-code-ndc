@@ -1,22 +1,16 @@
 //' 'let input = read_file("input/2015/22.txt");
 
-
 fn dec(x) {
-  if x > 0 { x - 1 } else { x }
+    if x > 0 { x - 1 } else { x }
 }
 
-pure fn sim(
-  p_turn, p_health, p_mana, p_armor_t, p_poison_t, p_charge_t, p_spent,
-  b_health, b_attack, p_poison_dmg
-) {
-
-
+pure fn sim(p_turn, p_health, p_mana, p_armor_t, p_poison_t, p_charge_t, p_spent, b_health, b_attack, p_poison_dmg) {
     if b_health <= 0 {
-      return p_spent;
+        return p_spent;
     }
 
     if p_health <= 0 {
-      return Inf;
+        return Inf;
     }
 
     let best = Inf;
@@ -25,115 +19,116 @@ pure fn sim(
 
     // Player actions
     if p_turn {
-      let boss_dmg = max(1, b_attack - if p_armor_t > 0 { 7 } else { 0 });
+        let boss_dmg = max(1, b_attack - if p_armor_t > 0 { 7 } else { 0 });
 
-      let mana_cost = 53;
-      if new_mana > mana_cost {
-        best min= sim(
-          !p_turn,
-          p_health - p_poison_dmg,
-          new_mana - mana_cost,
-          dec(p_armor_t),
-          dec(p_poison_t),
-          dec(p_charge_t),
-          p_spent + mana_cost,
-          b_health - (if p_poison_t > 0 { 3 } else { 0 }) - 4,
-          b_attack,
-          p_poison_dmg
-        );
-      }
+        let mana_cost = 53;
+        if new_mana > mana_cost {
+            best min= sim(
+                !p_turn,
+                p_health - p_poison_dmg,
+                new_mana - mana_cost,
+                dec(p_armor_t),
+                dec(p_poison_t),
+                dec(p_charge_t),
+                p_spent + mana_cost,
+                b_health - (if p_poison_t > 0 { 3 } else { 0 }) - 4,
+                b_attack,
+                p_poison_dmg,
+            );
+        }
 
-      // Drain
-      let mana_cost = 73;
-      if new_mana > mana_cost {
-        best min= sim(
-          !p_turn,
-          p_health + 2 - p_poison_dmg,
-          new_mana - mana_cost,
-          dec(p_armor_t),
-          dec(p_poison_t),
-          dec(p_charge_t),
-          p_spent + mana_cost,
-          b_health - (if p_poison_t > 0 { 3 } else { 0 }) - 2,
-          b_attack,
-          p_poison_dmg
-        );
-      }
+        // Drain
+        let mana_cost = 73;
+        if new_mana > mana_cost {
+            best min= sim(
+                !p_turn,
+                p_health + 2 - p_poison_dmg,
+                new_mana - mana_cost,
+                dec(p_armor_t),
+                dec(p_poison_t),
+                dec(p_charge_t),
+                p_spent + mana_cost,
+                b_health - (if p_poison_t > 0 { 3 } else { 0 }) - 2,
+                b_attack,
+                p_poison_dmg,
+            );
+        }
 
-      // Shield
-      let mana_cost = 113;
-      if new_mana > mana_cost and p_armor_t <= 1 {
-        best min= sim(
-          !p_turn,
-          p_health - p_poison_dmg,
-          new_mana - mana_cost,
-          6,
-          dec(p_poison_t),
-          dec(p_charge_t),
-          p_spent + mana_cost,
-          b_health - if p_poison_t > 0 { 3 } else { 0 },
-          b_attack,
-          p_poison_dmg
-        );
-      }
+        // Shield
+        let mana_cost = 113;
+        if new_mana > mana_cost and p_armor_t <= 1 {
+            best min= sim(
+                !p_turn,
+                p_health - p_poison_dmg,
+                new_mana - mana_cost,
+                6,
+                dec(p_poison_t),
+                dec(p_charge_t),
+                p_spent + mana_cost,
+                b_health - if p_poison_t > 0 { 3 } else { 0 },
+                b_attack,
+                p_poison_dmg,
+            );
+        }
 
+        // Poison
+        let mana_cost = 173;
+        if new_mana > mana_cost and p_poison_t <= 1 {
+            best min= sim(
+                !p_turn,
+                p_health - p_poison_dmg,
+                new_mana - mana_cost,
+                dec(p_armor_t),
+                6,
+                dec(p_charge_t),
+                p_spent + mana_cost,
+                b_health - if p_poison_t > 0 { 3 } else { 0 },
+                b_attack,
+                p_poison_dmg,
+            );
+        }
 
-      // Poison
-      let mana_cost = 173;
-      if new_mana > mana_cost and p_poison_t <= 1 {
-        best min= sim(
-          !p_turn,
-          p_health - p_poison_dmg,
-          new_mana - mana_cost,
-          dec(p_armor_t),
-          6,
-          dec(p_charge_t),
-          p_spent + mana_cost,
-          b_health - if p_poison_t > 0 { 3 } else { 0 },
-          b_attack,
-          p_poison_dmg
-        );
-      }
+        // Recharge
+        let mana_cost = 229;
+        if new_mana > mana_cost and p_charge_t <= 1 {
+            best min= sim(
+                !p_turn,
+                p_health - p_poison_dmg,
+                new_mana - mana_cost,
+                dec(p_armor_t),
+                dec(p_poison_t),
+                5,
+                p_spent + mana_cost,
+                b_health - if p_poison_t > 0 { 3 } else { 0 },
+                b_attack,
+                p_poison_dmg,
+            );
+        }
 
-      // Recharge
-      let mana_cost = 229;
-      if new_mana > mana_cost and p_charge_t <= 1 {
-        best min= sim(
-          !p_turn,
-          p_health - p_poison_dmg,
-          new_mana - mana_cost,
-          dec(p_armor_t),
-          dec(p_poison_t),
-          5,
-          p_spent + mana_cost,
-          b_health - if p_poison_t > 0 { 3 } else { 0 },
-          b_attack,
-          p_poison_dmg
-        );
-      }
-
-      return best;
+        return best;
     } else {
-      let boss_dmg = max(1, b_attack - if p_armor_t > 0 { 7 } else { 0 });
-      return sim(
-        !p_turn,
-        p_health - boss_dmg - p_poison_dmg,
-        new_mana,
-        dec(p_armor_t),
-        dec(p_poison_t),
-        dec(p_charge_t),
-        p_spent,
-        b_health - if p_poison_t > 0 { 3 } else { 0 },
-        b_attack, 
-        p_poison_dmg
-      );
+        let boss_dmg = max(1, b_attack - if p_armor_t > 0 { 7 } else { 0 });
+        return sim(
+            !p_turn,
+            p_health - boss_dmg - p_poison_dmg,
+            new_mana,
+            dec(p_armor_t),
+            dec(p_poison_t),
+            dec(p_charge_t),
+            p_spent,
+            b_health - if p_poison_t > 0 { 3 } else { 0 },
+            b_attack,
+            p_poison_dmg,
+        );
     }
 
     assert(false, "reached end of function");
 }
 
-
-sim(true, 10, 250, 0, 0, 0, 0, 13, 8, 0).print;
-sim(true, 10, 250, 0, 0, 0, 0, 14, 8, 0).print;
-sim(true, 50, 500, 0, 0, 0, 0, 58, 9, 0).print;
-sim(true, 50, 500, 0, 0, 0, 0, 58, 9, 1).print;
+// sim(true, 10, 250, 0, 0, 0, 0, 13, 8, 0).print;
+// sim(true, 10, 250, 0, 0, 0, 0, 14, 8, 0).print;
+let p1 = sim(true, 50, 500, 0, 0, 0, 0, 58, 9, 0);
+let p2 = sim(true, 50, 500, 0, 0, 0, 0, 58, 9, 1);
+assert_eq(p1, 1269);
+assert_eq(p2, 1309);
+print(p1, p2);

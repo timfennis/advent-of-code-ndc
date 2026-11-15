@@ -82,7 +82,7 @@ fn intersect(a, b) {
 	}
 	// This function should only compare lines that are under a 90 degree angle	
 	else {
-		assert(false, "Degen");
+        panic("unreachable");
 	}
 }
 

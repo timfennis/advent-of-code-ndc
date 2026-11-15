@@ -4,7 +4,7 @@ fn power(x, y, serial_number) {
 
 fn grid(serial_number, w, h) {
   let coord = 0, 0;
-  let best = -Inf;
+  let best = -(2^62);
   for x in 1..(300-w), y in 1..(300-h) {
   let new = [power(x + dx, y + dy, serial_number) for dx in 0..w, dy in 0..h].sum();
 
@@ -21,14 +21,14 @@ print(grid(7857, 3, 3));
 
 
 fn part2(serial_number) {
-  let bc,size,best = (),-Inf,-Inf;
+  let bc,size,best = None,-(2^62),-(2^62);
 
   for i in 1..300 {
     let coord, cur = grid(serial_number, i, i);
     if cur > best {
       best = cur;
       size = i;
-      bc = coord;
+      bc = Some(coord);
     }
     print(i, coord, cur);
   }

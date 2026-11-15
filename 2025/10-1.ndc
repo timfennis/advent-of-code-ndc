@@ -51,8 +51,7 @@ for line in input.lines {
 	let groups = line.split(" ");
 	let target = groups.remove(0)[1..-1];
 	let joltage = groups.pop();
-
-	groups map= nums;
+    let groups = groups.map(nums);
 
 	// print("PATTERN",target,  solve(target, groups));
 	p1 += solve(target, groups);

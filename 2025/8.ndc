@@ -62,7 +62,7 @@ for idx in (0..pairs.len) {
 		graph_id += 1;
 		let new_id = graph_id;
 
-		print("MERGING", lookup[a], lookup[b], "into", new_id);
+		// print("MERGING", lookup[a], lookup[b], "into", new_id);
 
 		let new_graph = graphs[lookup[a]] | graphs[lookup[b]];
 		
@@ -81,18 +81,18 @@ for idx in (0..pairs.len) {
 		graph_id += 1;
 		let new_id = graph_id;
 
-		print("creating new graph", new_id);
+		// print("creating new graph", new_id);
 
 		graphs[new_id] = %{a, b};
 		lookup[a] = new_id;
 		lookup[b] = new_id;
 	}
 
-	print("Current length is ", graphs.len, a[0] * b[0]);
+	// print("Current length is ", graphs.len, a[0] * b[0]);
 	// print("Graphs len", graphs.values.map(len).sum);
 	// print(boxes.len);
 	if graphs.len == 1 and graphs.values.map(len).sum == boxes.len {
-		print(a, b);
+		// print(a, b);
 		print(a[0] * b[0]);
 		break;
 	} 

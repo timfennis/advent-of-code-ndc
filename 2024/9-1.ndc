@@ -10,7 +10,7 @@ for idx, num in input.enumerate {
 	let num = int(num);
 	if idx % 2 == 0 {
 		for _ in (0..num) {
-			out.push(file_id);
+			out.push(Some(file_id));
 		}
 		file_id += 1;
 	} else {
@@ -46,7 +46,7 @@ while idx < rev {
 
 for (idx, id) in out.enumerate {
 	if id != None {
-		p1 += (idx * id);
+		p1 += (idx * id.unwrap());
 	}
 }
 // kprint(out);

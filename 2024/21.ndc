@@ -104,7 +104,7 @@ pure fn solve_pair(from, to, graph, times) {
 		return ways.first.len;
 	}
 
-	let best = Inf;
+	let best = (2^62);
 	for way in ways {
 		let way = ["A"] ++ way;
 

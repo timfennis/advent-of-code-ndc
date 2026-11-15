@@ -1,12 +1,10 @@
-let lines = read_file("input/1").lines();
+let lines = read_file("input/1").lines.map(int);
 
 let nums = [];
 let len = lines.len();
 let idx, sum = 0, 0;
 
 for idx in 0..len {
-  // The `int` function accepts a '+' sign as part of the input string
-  lines[idx] = int(lines[idx]);
   sum += lines[idx];
   nums.push(sum);
 }

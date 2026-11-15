@@ -18,7 +18,7 @@ fn solve(i) {
 		let cur, cost = queue.pop_front;
 
 		if cur == (70, 70) {
-			return cost;
+			return Some(cost);
 		}
 
 		for delta in nb4 {

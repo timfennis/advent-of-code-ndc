@@ -1,12 +1,12 @@
 let lines = read_file("input/4").lines().sorted();
 
 let guards = %{};
-let id = "";
-let sleep = ();
+let id = -1;
+let sleep = None;
 for line in lines {
   let _, hour, minute, txt = line.capture_once(r"^\[\d+-\d+-\d+ (\d+):(\d+)\] (.*)");
-  hour = int(hour);
-  minute = int(minute);
+  let hour = int(hour);
+  let minute = int(minute);
   
   let start = txt.capture_once(r"Guard #(\d+) begins shift");
   if start != [] {
@@ -16,10 +16,10 @@ for line in lines {
     }
   }
   if txt == "falls asleep" {
-    sleep = minute;
+    sleep = Some(minute);
   }
   if txt == "wakes up" {
-    for min in sleep..minute {
+    for min in (sleep.unwrap()..minute) {
       guards[id][min] += 1;
     }
   }

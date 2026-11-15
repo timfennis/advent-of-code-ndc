@@ -10,7 +10,7 @@ fn find_next(idx: Int) {
     }
   }
 
-  assert(false);
+  panic("unreachable");
 }
 
 while elves.count(fn(x) => x > 0) > 1 {

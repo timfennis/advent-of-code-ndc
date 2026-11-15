@@ -1,9 +1,9 @@
 let input = read_file("input/2024/19.txt").trim;
 let patterns, designs = input.paragraphs;
-designs = designs.lines;
-patterns = patterns.split(", ");
+let designs = designs.lines;
+let patterns = patterns.split(", ");
 
-pure fn is_possible(design) {
+pure fn is_possible(design) -> Bool {
   if design == "" { return true; }
 
   let possible = false;

@@ -25,7 +25,7 @@ while rev > 0  {
 		// Find a space to put the file
 		while idx < rev {
 			if out[idx][1] >= size and out[idx][0] == -1 {
-				new = out[idx];
+				new = Some(out[idx]);
 				break;
 			}
 
@@ -33,7 +33,7 @@ while rev > 0  {
 		}
 
 		if new != None {
-			let new_id, slot_size = new;
+			let new_id, slot_size = new.unwrap();
 			let rem = slot_size - size;
 
 			out[idx] = (id, size);

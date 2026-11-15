@@ -42,6 +42,8 @@ fn solve(end) {
 			}
 		}
 	}
+
+    panic("unreachable");
 }
 
 print(solve((31,39)));

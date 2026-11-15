@@ -1,7 +1,7 @@
 let input = read_file("input/2025/3.txt").trim;
 
 pure fn solve(bank, rem) {
-	let best = -Inf;
+	let best = -(2^62);
 
 	if rem > 0 {
 		for idx in (0..(bank.len - rem)) {
