@@ -1,0 +1,11 @@
+let input = read_file("input/2015/2.txt").trim.lines.map(nums);
+// input = ["2x3x4", "1x1x10"];
+let out = input.map(fn(xs) {
+    let sides = xs.circular_tuple_windows().map(fn(x) => x[0] * x[1]);
+
+    let ribbon = xs.circular_tuple_windows().map(fn(y) => 2 * y[0] + 2 * y[1]).min + xs.product;
+
+    return (sides.sum * 2 + sides.min, ribbon);
+});
+
+print(out.reduce(fn(a, b) => a + b));

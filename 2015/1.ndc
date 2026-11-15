@@ -1,0 +1,10 @@
+let input = read_file("input/2015/1.txt").trim;
+
+let p2, floor = 0, 0;
+for p, c in input.enumerate {
+    if c == "(" { floor += 1; } else if c == ")" { floor -= 1; }
+
+    if floor == -1 and p2 == 0 { p2 = p + 1; }
+}
+
+print(floor, p2);
