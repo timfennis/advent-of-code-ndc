@@ -1,4 +1,4 @@
-let input = read_file("input/2024/12.txt").trim;
+let input = read_stdin().trim;
 // let input = "RRRRIICCFF
 // RRRRIICCCF
 // VVRRRCCFFF

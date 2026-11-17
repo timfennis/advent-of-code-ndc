@@ -1,4 +1,4 @@
-lines = read_file("input/2").lines();
+lines = read_stdin().lines();
 
 let two, three = 0, 0;
 

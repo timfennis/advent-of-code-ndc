@@ -1,4 +1,4 @@
-let lines = read_file("input/4").lines().sorted();
+let lines = read_stdin().lines().sorted();
 
 let guards = %{};
 let id = -1;

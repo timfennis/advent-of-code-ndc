@@ -1,4 +1,4 @@
-let input = read_file("input/2015/23.txt");
+let input = read_stdin();
 
 fn run(aa) {
     let ip = 0;

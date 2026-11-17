@@ -1,4 +1,4 @@
-let input = read_file("input/2016/11.txt");
+let input = read_stdin();
 let input = r"The first floor contains a hydrogen-compatible microchip and a lithium-compatible microchip.
 The second floor contains a hydrogen generator.
 The third floor contains a lithium generator.

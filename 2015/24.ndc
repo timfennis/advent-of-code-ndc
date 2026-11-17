@@ -1,4 +1,4 @@
-let input = read_file("input/2015/24.txt").nums;
+let input = read_stdin().nums.map(Number);
 
 fn find_start(target) {
     for gg in input.sorted.reversed.prefixes {
@@ -6,22 +6,24 @@ fn find_start(target) {
             return gg.len;
         }
     }
+
+    panic("nothing found");
 }
 
 fn solve(size) {
     let tar = input.sum / size;
     let start = find_start(tar);
-    let best = Inf;
+    let best = Number(Inf);
 
     for size in (start..) {
-        for group in input.combinations(size), if (group.list as List<Int>).sum == tar {
-            best min= (group.list as List<Int>).product;
+        for group in input.combinations(size), if group.sum == tar {
+            best min= group.product;
         }
 
         if best != Inf { return best };
     }
 
-    return best[1];
+    return best;
 }
 
 solve(3).print;

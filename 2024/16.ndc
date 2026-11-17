@@ -1,4 +1,4 @@
-let input = read_file("input/2024/16.txt").trim;
+let input = read_stdin().trim;
 
 let nb4 = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 let grid = input.lines;

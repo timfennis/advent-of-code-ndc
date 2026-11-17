@@ -1,4 +1,4 @@
-let ranges, ids = read_file("input/2025/5.txt").paragraphs;
+let ranges, ids = read_stdin().paragraphs;
 
 let rr = [];
 for range in ranges.lines {

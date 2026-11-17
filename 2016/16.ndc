@@ -1,4 +1,4 @@
-let pattern = read_file("input/2016/16.txt").trim;
+let pattern = read_stdin().trim;
 let pattern = "111";
 
 fn invert(d) { if d == "1" { "0" } else { "1" } }

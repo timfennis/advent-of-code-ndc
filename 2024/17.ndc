@@ -77,7 +77,7 @@ fn run(prog, ra, rb, rc) {
 	return output;
 }
 
-let input = read_file("input/2024/17.txt").trim;
+let input = read_stdin().trim;
 // let input = "Register A: 33024962
 // Register B: 0
 // Register C: 0

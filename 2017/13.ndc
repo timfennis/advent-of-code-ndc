@@ -1,4 +1,4 @@
-let layers = %{:(), a: b for [a, b] in read_file("input/2017/13.txt").lines.map(nums) };
+let layers = %{:(), a: b for [a, b] in read_stdin().lines.map(nums) };
 
 pure fn loc(l, t) {
   return (t % (layers[l] * 2 - 2));

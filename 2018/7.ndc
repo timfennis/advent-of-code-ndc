@@ -1,4 +1,4 @@
-let lines = read_file("input/7").trim().lines();
+let lines = read_stdin().trim().lines();
 
 let graph = %{};
 let rev_graph = %{};

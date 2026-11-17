@@ -14,19 +14,15 @@ fn retract(cur) {
   return cur;
 }
 
-let line = read_file("input/5").trim();
+let line = read_stdin().trim();
 
 let ans = line.retract().len();
 print("part 1:", ans);
 
 let best = ans;
 for c in "abcdefghijklmnopqrstuvwxyz" {
-  let l = "";
-  for cc in line, if cc.to_lower() != c {
-    l.append(cc);
-  }
-  
-  best min= l.retract().len();
+  let ll = line.filter(fn(cc) => cc.to_lower() != c).join("");
+  best min= ll.retract().len();
 }
 
 print("part 2:", best);

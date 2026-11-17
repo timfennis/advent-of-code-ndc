@@ -1,4 +1,4 @@
-let txt, pages = read_file("input/2024/5.txt").paragraphs;
+let txt, pages = read_stdin().paragraphs;
 let rules = %{:0, (a, b): -1 for a, b in txt.lines.map(nums) };
 let p1, p2 = 0, 0;
 

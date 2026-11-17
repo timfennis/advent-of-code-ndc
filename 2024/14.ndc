@@ -1,4 +1,4 @@
-let input = read_file("input/2024/14.txt").trim;
+let input = read_stdin().trim;
 
 let width = 101;
 let height = 103;

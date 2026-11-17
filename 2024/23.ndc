@@ -1,4 +1,4 @@
-let input = read_file("input/2024/23.txt");
+let input = read_stdin();
 
 let p1, p2 = 0, 0;
 

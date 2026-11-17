@@ -1,4 +1,4 @@
-let lines = read_file("input/15").lines();
+let lines = read_stdin().lines();
 
 fn enemy(type) {
   if type == "E" { "G" } else { "E" }

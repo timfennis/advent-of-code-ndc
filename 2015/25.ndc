@@ -1,4 +1,4 @@
-let rr, cc = read_file("input/2015/25.txt").nums;
+let rr, cc = read_stdin().nums;
 
 let cur = 20151125;
 let row = 1;

@@ -1,4 +1,4 @@
-let input = read_file("input/2025/3.txt").trim;
+let input = read_stdin().trim;
 
 pure fn solve(bank, rem) {
 	let best = -(2^62);

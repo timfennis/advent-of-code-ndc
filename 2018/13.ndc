@@ -1,4 +1,4 @@
-let input = read_file("input/13");
+let input = read_stdin();
 let data = [[char for char in line] for line in input.lines()];
 let width = data[0].len();
 let height = data.len();

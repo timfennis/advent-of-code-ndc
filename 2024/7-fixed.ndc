@@ -1,4 +1,4 @@
-let input = read_file("input/2024/7.txt");
+let input = read_stdin();
 
 let ops = [
   fn(a, b) => a * b,

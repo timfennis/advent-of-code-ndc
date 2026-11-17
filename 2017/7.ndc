@@ -1,4 +1,4 @@
-let input = read_file("input/2017/7.txt");
+let input = read_stdin();
 
 let seen = %{};
 let graph = %{};

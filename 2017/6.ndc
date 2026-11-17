@@ -1,4 +1,4 @@
-let input = read_file("input/2017/6.txt");
+let input = read_stdin();
 
 for line in input.lines() {
 	print(line);

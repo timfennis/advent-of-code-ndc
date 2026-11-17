@@ -1,4 +1,4 @@
-let input = read_file("input/2024/1.txt");
+let input = read_stdin();
 
 let left, right = [], [];
 for line in input.lines() {

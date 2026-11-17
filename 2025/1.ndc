@@ -1,4 +1,4 @@
-let input = read_file("input/2025/1.txt").trim.lines;
+let input = read_stdin().trim.lines;
 
 let idx = 50;
 let p1, p2 = 0, 0;

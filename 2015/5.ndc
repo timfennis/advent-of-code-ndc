@@ -1,0 +1,17 @@
+let vowels = "aeiou";
+let banned = ["ab", "cd", "pq", "xy"];
+let input = read_stdin();
+
+fn is_nice(s) {
+    s.count(fn(x) => x in vowels) >= 3 and
+    s.pairwise().any(fn(a) => a[0] == a[1]) and
+    banned.none(fn(x) => x in s)
+}
+
+fn is_nice2(s) {
+    (0..(s.len)).any(fn(idx) => s[idx..(idx+2)] in s[idx+2..]) and
+    s.windows(3).any(fn(x) => x[0] == x[2]) 
+}
+
+input.lines.count(is_nice).print;
+input.lines.count(is_nice2).print;

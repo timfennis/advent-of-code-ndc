@@ -1,4 +1,4 @@
-let input = read_file("input/2016/18.txt").trim;
+let input = read_stdin().trim;
 // let input = ".^^.^.^^^^".trim();
 let input = list(input);
 

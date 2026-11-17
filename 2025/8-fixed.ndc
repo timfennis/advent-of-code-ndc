@@ -1,4 +1,4 @@
-let input = read_file("input/2025/8.txt");
+let input = read_stdin();
 let boxes = %{ box: id for (id, box) in input.lines.map(nums).enumerate };
 
 let dist = [ (a.zip(b).map(fn(x) => abs_diff(x[0], x[1])^2).sum, a, b) for (a, b) in boxes.keys().combinations(2)];

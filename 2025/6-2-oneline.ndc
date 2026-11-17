@@ -1,4 +1,4 @@
-read_file("input/2025/6.txt")
+read_stdin()
   .lines
   .transposed
   .map(fn(x) => x.join(""))

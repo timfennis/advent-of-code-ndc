@@ -1,4 +1,4 @@
-let init, lines = read_file("input/12").split_once("\n\n");
+let init, lines = read_stdin().split_once("\n\n");
 let _, init = init.split_once(": ");
 
 let rules = %{:"."};

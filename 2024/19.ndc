@@ -1,4 +1,4 @@
-let patterns, designs = read_file("input/2024/19.txt").trim.paragraphs;
+let patterns, designs = read_stdin().trim.paragraphs;
 let patterns = patterns.split(", ");
 pure fn count_possible(design) {
 	if design == "" { return 1 };

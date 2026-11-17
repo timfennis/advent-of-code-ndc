@@ -41,7 +41,7 @@ fn compute(input, rec) {
   return out;
 }
 
-let input = read_file("input/2016/9.txt").trim;
+let input = read_stdin().trim;
 
 print(compute(input, false));
 print(compute(input, true));

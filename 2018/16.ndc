@@ -1,4 +1,4 @@
-let fst, snd = read_file("input/16").split_once("\n\n\n");
+let fst, snd = read_stdin().split_once("\n\n\n");
 
 fn addr(pre, ins) {
   let op, a, b, c = ins;

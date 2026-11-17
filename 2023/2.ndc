@@ -1,4 +1,4 @@
-let input = read_file("input/2023/2");
+let input = read_stdin();
 
 let rules = %{"red": 12, "green": 13, "blue": 14};
 let ans = 0;

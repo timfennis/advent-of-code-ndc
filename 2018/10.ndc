@@ -1,4 +1,4 @@
-let points = [line.signed_nums() for line in read_file("input/10").lines()];
+let points = [line.signed_nums() for line in read_stdin().lines()];
 
 fn advance(points) {
   let ret = [];

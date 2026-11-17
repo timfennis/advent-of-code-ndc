@@ -1,4 +1,4 @@
-let input = read_file("input/2024/22.txt").trim;
+let input = read_stdin().trim;
 let p1 = 0;
 
 fn calc(num) {

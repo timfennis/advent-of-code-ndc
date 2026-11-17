@@ -1,4 +1,4 @@
-let salt = read_file("input/2016/17.txt").trim;
+let salt = read_stdin().trim;
 let dir4 = %{
   (-1, 0): "U",
   (1, 0): "D",

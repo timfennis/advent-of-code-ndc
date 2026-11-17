@@ -1,4 +1,4 @@
-let input = read_file("input/2024/9.txt").trim;
+let input = read_stdin().trim;
 // let input = "2333133121414131402";
 
 let p1, p2 = 0, 0;

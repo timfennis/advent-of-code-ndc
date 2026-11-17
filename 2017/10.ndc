@@ -1,4 +1,4 @@
-let seq = read_file("input/2017/10.txt").trim;
+let seq = read_stdin().trim;
 
 
 let hex_table = "0123456789abcdef";

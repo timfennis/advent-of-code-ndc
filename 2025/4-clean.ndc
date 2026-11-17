@@ -1,4 +1,4 @@
-    let grid = read_file("input/2025/4.txt").lines;
+    let grid = read_stdin().lines;
     let height, width = grid.len, grid[0].len;
     let nb8 = [(x, y) for x in -1..2, y in -1..2, if (x != 0 or y != 0)];
     let objs = %{ (r, c) for r in 0..height, c in 0..width, if grid[r][c] != "." };

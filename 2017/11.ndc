@@ -11,7 +11,7 @@ let dir6 = %{
   "sw": (-1, 0, 1),
 };
 
-let ins = read_file("input/2017/11.txt");
+let ins = read_stdin();
 /// let ins = "se,sw,se,sw,sw".split(",").map(trim);
 
 fn dist(point) {

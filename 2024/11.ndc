@@ -1,4 +1,4 @@
-let nums = read_file("input/2024/11.txt").trim.nums;
+let nums = read_stdin().trim.nums;
 let stones = %{:0};
 
 for num in nums {

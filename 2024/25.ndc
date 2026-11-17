@@ -1,4 +1,4 @@
-let input = read_file("input/2024/25.txt").trim;
+let input = read_stdin().trim;
 let p1, p2 = 0, 0;
 
 let keys = input.paragraphs;

@@ -1,4 +1,4 @@
-let input = read_file("input/2024/5.txt");
+let input = read_stdin();
 // let input = "
 // 47|53
 // 97|13

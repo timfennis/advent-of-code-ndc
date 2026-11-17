@@ -1,0 +1,37 @@
+let dir = %{
+    ">": (0, 1),
+    "<": (0, -1),
+    "^": (1, 0),
+    "v": (-1, 0),
+};
+
+fn convert(c) => dir[c]
+
+let input = read_stdin().trim.map(convert);
+
+fn part1(input) {
+    let seen = %{(0, 0)};
+
+    input.fold((0, 0), fn(a, b) {
+        seen.insert(a + b);
+        a + b
+    });
+
+    seen
+}
+
+fn part2(input) {
+    let seen = %{(0, 0)};
+    input.chunks(2).fold(((0, 0), (0, 0)), fn(a, b) {
+        let a1, a2 = a;
+        let b1, b2 = b;
+        seen.insert(a1 + b1);
+        seen.insert(a2 + b2);
+        (a1 + b1, a2 + b2)
+    });
+
+    seen
+}
+
+part1(input).len.print;
+part2(input).len.print;

@@ -1,4 +1,4 @@
-let target = read_file("input/2015/20.txt").nums.first;
+let target = read_stdin().nums.first;
 
 pure fn calc(house, mul, lim) {
     let lim = if lim == false {

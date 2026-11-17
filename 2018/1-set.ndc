@@ -1,4 +1,4 @@
-let nums = read_file("input/1").signed_nums();
+let nums = read_stdin().signed_nums();
 let sum = 0;
 let set = %{};
 

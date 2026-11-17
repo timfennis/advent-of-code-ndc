@@ -1,7 +1,7 @@
 
 
 let aa = %{};
-for y, line in read_file("10.in").lines.enumerate {
+for y, line in read_stdin().lines.enumerate {
   for x, char in line.enumerate {
     if char == "#" {
       aa.insert((x, y));
@@ -15,8 +15,8 @@ fn gcd(tup) {
   tup / g
 }
 
-let bestlen = -Inf;
-let best = ();
+let bestlen = Number(-Inf);
+let best = None;
 for a, _ in aa {
   let seen = %{};
   for b, _ in aa,  if a != b {
@@ -32,12 +32,14 @@ for a, _ in aa {
   }
 
   if seen.len > bestlen {
-    bestlen = seen.len;
-    best = a;
+    bestlen = Number(seen.len);
+    best = Some(a);
   }
 }
 
-print("Part 1: ", bestlen, best);
+let best = best.unwrap();
+
+print("Part 1:", bestlen, best);
 
 fn north(vec) {
   let angle = float(vec[0]).atan2(float(vec[1]));
@@ -67,11 +69,10 @@ while shot.len < 200 {
     if cur in aa { // SHOOT THE ASTEROID
       shot.push(cur);
       aa.remove(cur);
-      print("SHOT ASTEROID #", shot.len, "at", cur, "delta", t);
     }
 
     if shot.len >= 200 {
-      print("part 2", cur[0] * 100 + cur[1]);
+      print("Part 2", cur[0] * 100 + cur[1]);
       break;
     }
   }

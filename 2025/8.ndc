@@ -1,4 +1,4 @@
-let input = read_file("input/2025/8.txt");
+let input = read_stdin();
 // let input = "162,817,812
 // 57,618,57
 // 906,360,560

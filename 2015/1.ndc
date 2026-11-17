@@ -1,4 +1,4 @@
-let input = read_file("input/2015/1.txt").trim;
+let input = read_stdin().trim;
 
 let p2, floor = 0, 0;
 for p, c in input.enumerate {

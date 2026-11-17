@@ -20,3 +20,12 @@ A collection of Advent of Code puzzle solutions written in `.ndc`, organized by 
 | **Total** | **85 / 262** | **32%** |
 
 Progress counts distinct day numbers with at least one solution. Alternative, fixed, and experimental versions are preserved in the repository but count once toward completion. Advent of Code has 25 puzzles per year through 2024; 2025 and later years use 12 puzzles.
+
+## Running
+
+Solutions live in `<year>/<day>.ndc` and read their puzzle input with `read_stdin()`. Inputs are stored (gitignored) in `input/<year>/<day>.txt` and fed to the script by [`aoc`](../aoc-cli):
+
+```sh
+aoc get 5 -y 2015   # download input/2015/5.txt (needs COOKIE in .env)
+cd 2015 && aoc run 5   # year is inferred from the directory
+```

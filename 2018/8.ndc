@@ -1,4 +1,4 @@
-let data = read_file("input/8").trim().nums();
+let data = read_stdin().trim().nums();
 // let data = "2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2".nums();
 
 let children_map = %{};

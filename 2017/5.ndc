@@ -1,4 +1,4 @@
-let arr = read_file("input/2017/5.txt").signed_nums;
+let arr = read_stdin().signed_nums;
 
 fn solve(arr) {
   let pos, newpos, i = 0, 0, 0;

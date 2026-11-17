@@ -1,4 +1,4 @@
-let lines = read_file("input/3").lines();
+let lines = read_stdin().lines();
 
 let map = %{:0};
 

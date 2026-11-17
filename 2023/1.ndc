@@ -1,4 +1,4 @@
-let input = read_file("input/2023/1");
+let input = read_stdin();
 
 let digits = ["$$$", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
 let p1, p2 = 0, 0;

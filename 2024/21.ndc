@@ -1,4 +1,4 @@
-let input = read_file("input/2024/21.txt");
+let input = read_stdin();
 
 let pairs = %{
 	(a, b): c

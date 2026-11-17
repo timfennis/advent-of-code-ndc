@@ -1,4 +1,4 @@
-let graph = %{ n[0]: n[1..] for n in read_file("input/2017/12.txt").lines.map(nums) };
+let graph = %{ n[0]: n[1..] for n in read_stdin().lines.map(nums) };
 
 fn solve(id) {
   let seen = %{};

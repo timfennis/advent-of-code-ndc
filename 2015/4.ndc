@@ -1,0 +1,12 @@
+let found1 = false;
+for x in (1..) {
+    let hash = md5("iwrupvqb" <> x);
+    if not found1 and hash.starts_with("00000") {
+        print(x);
+        found1 = true;
+    }
+    if hash.starts_with("000000") {
+        print(x);
+        break;
+    }
+}

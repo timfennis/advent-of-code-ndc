@@ -1,4 +1,4 @@
-let input = read_file("input/2024/18.txt").trim;
+let input = read_stdin().trim;
 let data = input.lines.map(nums);
 
 let nb4 = [(-1, 0), (1, 0), (0, -1), (0, 1)];
