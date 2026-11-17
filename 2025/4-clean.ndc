@@ -10,7 +10,7 @@
     print("Part 1", accessible_rolls(objs).len);
 
     let p1, p2 = 0, 0;
-    let orig, rem = objs.len, ();
+    let orig, rem = objs.len, %{};
     while { rem = accessible_rolls(objs); rem.len != 0 } {
         objs -= rem;
     }
